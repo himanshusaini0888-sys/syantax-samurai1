@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>SAMBANDH.AI – Citizen Grievance Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #ffffff;
+      color: #0f172a;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Government header banner */
+    .gov-banner {
+      background: linear-gradient(to right, #FF9933, #ffffff, #138808);
+      padding: 0.5rem 0;
+    }
+
+    .gov-banner-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .gov-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .gov-flag {
+      height: 2rem;
+      width: 3rem;
+      border-radius: 0.25rem;
+      object-fit: cover;
+    }
+
+    .gov-right {
+      display: none;
+      align-items: center;
+      gap: 1rem;
+      color: #475569;
+    }
+
+    @media (min-width: 768px) {
+      .gov-right {
+        display: flex;
+      }
+    }
+
+    /* Hero section */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(31, 58, 138, 0.05), #ffffff, rgba(14, 165, 164, 0.05));
+    }
+
+    .hero-inner {
+      padding: 4rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .hero-inner {
+        padding: 6rem 0;
+      }
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .hero-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(14, 165, 164, 0.2);
+      font-size: 0.8rem;
+      color: #0EA5A4;
+      font-weight: 600;
+    }
+
+    .badge-icon {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 999px;
+      background: #0EA5A4;
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #1F3A8A;
+      margin-bottom: 1.2rem;
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-title {
+        font-size: 3.1rem;
+      }
+    }
+
+    .hero-text {
+      font-size: 1rem;
+      color: #475569;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .hero-text {
+        font-size: 1.1rem;
+      }
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 640px) {
+      .hero-actions {
+        flex-direction: row;
+      }
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.9rem 2rem;
+      border-radius: 0.9rem;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(to right, #1F3A8A, #0EA5A4);
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.9rem 2rem;
+      border-radius: 0.9rem;
+      border: 1px solid rgba(31, 58, 138, 0.2);
+      cursor: pointer;
+      background: #ffffff;
+      color: #1F3A8A;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.3);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-icon {
+      width: 2rem;
+      height: 2rem;
+      margin: 0 auto 0.3rem;
+      border-radius: 999px;
+      background: #0EA5A4;
+    }
+
+    .hero-stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1F3A8A;
+    }
+
+    .hero-stat-label {
+      font-size: 0.7rem;
+      color: #64748b;
+    }
+
+    /* Right image */
+    .hero-image-wrap {
+      position: relative;
+    }
+
+    .hero-image-card {
+      position: relative;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.35);
+    }
+
+    .hero-image-main {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .hero-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(31, 58, 138, 0.6), transparent);
+    }
+
+    .hero-image-bottom {
+      position: absolute;
+      left: 1.5rem;
+      right: 1.5rem;
+      bottom: 1.5rem;
+    }
+
+    .hero-badge-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+
+    .hero-badge-inner {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-badge-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.9rem;
+      background: linear-gradient(to bottom right, #22c55e, #059669);
+    }
+
+    .hero-floating {
+      position: absolute;
+      top: -1rem;
+      right: -1rem;
+      background: #ffffff;
+      border-radius: 1.3rem;
+      padding: 1rem;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.35);
+      width: 7rem;
+    }
+
+    .hero-floating img {
+      border-radius: 0.9rem;
+      margin-bottom: 0.4rem;
+      height: 5rem;
+      object-fit: cover;
+    }
+
+    .hero-floating-text {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-align: center;
+      color: #1F3A8A;
+    }
+
+    /* Features section */
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section-white {
+      background: #ffffff;
+    }
+
+    .section-muted {
+      background: linear-gradient(135deg, #f8fafc, #e5e7eb);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-text {
+      font-size: 0.95rem;
+      color: #64748b;
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .features-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .feature-card {
+      background: #ffffff;
+      border-radius: 1.3rem;
+      padding: 2rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+      height: 100%;
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 3.2rem;
+      height: 3.2rem;
+      border-radius: 1rem;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(to bottom right, #1F3A8A, #0EA5A4);
+    }
+
+    .feature-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-text {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    /* Trust section */
+    .trust-grid {
+      display: grid;
+      gap: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .trust-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+      }
+    }
+
+    .trust-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      margin-bottom: 1.5rem;
+    }
+
+    .trust-text {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+    }
+
+    .trust-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: #334155;
+    }
+
+    .trust-item-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 999px;
+      background: #0EA5A4;
+    }
+
+    .trust-card {
+      background: linear-gradient(135deg, #1F3A8A, #0EA5A4);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      color: #ffffff;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.45);
+    }
+
+    .trust-card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .trust-stat-block {
+      margin-bottom: 1.5rem;
+    }
+
+    .trust-stat-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .trust-bar-bg {
+      height: 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+    }
+
+    .trust-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: #ffffff;
+    }
+
+    /* Badges row */
+    .badges-section {
+      padding: 3rem 0;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0.8;
+    }
+
+    .badge-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #475569;
+    }
+
+    .badge-item-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 999px;
+      background: #1F3A8A;
+    }
+
+    .badge-divider {
+      width: 1px;
+      height: 1.5rem;
+      background: #cbd5f5;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.75rem 0;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      text-decoration: none;
+    }
+
+    .navbar-logo-icon {
+      width: 2.2rem;
+      height: 2.2rem;
+      background: linear-gradient(135deg, #1F3A8A, #0EA5A4);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-login {
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.6rem;
+      border: 1px solid #1F3A8A;
+      color: #1F3A8A;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .btn-login:hover {
+      background: #1F3A8A;
+      color: #ffffff;
+    }
+
+    .btn-dashboard {
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.6rem;
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-dashboard:hover {
+      background: #e2e8f0;
+    }
+
+    /* Partners Section */
+    .partners-section {
+      background: #f8fafc;
+      padding: 2rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .partners-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .partners-title {
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .partners-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      opacity: 0.7;
+    }
+
+    .partner-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: #475569;
+      font-size: 1.1rem;
+      filter: grayscale(100%);
+      transition: all 0.3s;
+    }
+
+    .partner-item:hover {
+      filter: grayscale(0%);
+      color: #1F3A8A;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <!-- Government Header Banner -->
+    <div class="gov-banner">
+      <div class="container gov-banner-inner">
+        <div class="gov-left">
+          <img
+            src="https://images.unsplash.com/photo-1629027265737-7e471b731e3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=60"
+            alt="India Flag" class="gov-flag" />
+          <span class="gov-text">Government of India</span>
+        </div>
+        <div class="gov-right">
+          <span>Digital India Initiative</span>
+          <span>•</span>
+          <span>Ministry of Electronics &amp; IT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="landingpage.html" class="navbar-logo">
+          <div class="navbar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              style="width:1.5rem;height:1.5rem;color:white;">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <span>SAMBANDH.AI</span>
+        </a>
+        <div class="navbar-right">
+          <!-- Logic for dynamic buttons handled in script -->
+          <div id="nav-buttons">
+            <a href="login.html" class="btn-login">Login</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-grid">
+          <!-- Left content -->
+          <div>
+            <div class="badge">
+              <span class="badge-icon" style="display:flex;align-items:center;justify-content:center;background:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </span>
+              <span>Government of India Initiative</span>
+            </div>
+
+            <h1 class="hero-title">
+              AI-Powered Grievance Redressal for Smarter Governance
+            </h1>
+
+            <p class="hero-text">
+              A revolutionary platform leveraging Artificial Intelligence to provide swift,
+              transparent, and efficient resolution of citizen complaints across India.
+            </p>
+
+            <div class="hero-actions">
+              <a href="login.html" class="btn-primary">Register Complaint</a>
+              <a href="login.html" class="btn-secondary">Track Status</a>
+            </div>
+
+            <!-- Quick stats -->
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-icon" style="display:flex;align-items:center;justify-content:center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="#0EA5A4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div class="hero-stat-value">2.5M+</div>
+                <div class="hero-stat-label">Citizens Served</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-icon" style="display:flex;align-items:center;justify-content:center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="#0EA5A4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                    <polyline points="17 6 23 6 23 12" />
+                  </svg>
+                </div>
+                <div class="hero-stat-value">94%</div>
+                <div class="hero-stat-label">Resolution Rate</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-icon" style="display:flex;align-items:center;justify-content:center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="#0EA5A4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </div>
+                <div class="hero-stat-value">48hrs</div>
+                <div class="hero-stat-label">Avg. Response Time</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right image -->
+          <div class="hero-image-wrap">
+            <div class="hero-image-card">
+              <img
+                src="https://images.unsplash.com/photo-1646298714297-5e13878336c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                alt="Government Building" class="hero-image-main" />
+              <div class="hero-image-overlay"></div>
+
+              <div class="hero-image-bottom">
+                <div class="hero-badge-card">
+                  <div class="hero-badge-inner">
+                    <div class="hero-badge-icon" style="display:flex;align-items:center;justify-content:center;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="7" />
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p style="font-weight:700;color:#1F3A8A;margin-bottom:0.1rem;">ISO 27001 Certified</p>
+                      <p style="font-size:0.8rem;color:#64748b;">Secure &amp; Compliant</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating badge -->
+            <div class="hero-floating">
+              <div
+                style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;background:#1F3A8A;border-radius:8px;margin-bottom:0.25rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
+                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+                  <path d="M9 22v-4h6v4" />
+                  <path d="M8 6h.01" />
+                  <path d="M16 6h.01" />
+                  <path d="M12 6h.01" />
+                  <path d="M12 10h.01" />
+                  <path d="M12 14h.01" />
+                  <path d="M16 10h.01" />
+                  <path d="M16 14h.01" />
+                  <path d="M8 10h.01" />
+                  <path d="M8 14h.01" />
+                </svg>
+              </div>
+              <p class="hero-floating-text">Digital India</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partners / Initiatives -->
+    <section class="partners-section">
+      <div class="partners-container">
+        <p class="partners-title">Supported by Government of India Initiatives</p>
+        <div class="partners-grid">
+          <!-- Digital India -->
+          <div class="partner-item" title="Digital India">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span>Digital India</span>
+          </div>
+
+          <!-- G20 -->
+          <div class="partner-item" title="G20 India">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M2.05 12a10 10 0 0 1 19.9 0"></path>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+              </path>
+            </svg>
+            <span>G20</span>
+          </div>
+
+          <!-- Swachh Bharat -->
+          <div class="partner-item" title="Swachh Bharat">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="12" r="4"></circle>
+              <circle cx="18" cy="12" r="4"></circle>
+              <path d="M10 12h4"></path>
+            </svg>
+            <span>Swachh Bharat</span>
+          </div>
+
+          <!-- Make in India -->
+          <div class="partner-item" title="Make in India">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+              </path>
+            </svg>
+            <span>Make in India</span>
+          </div>
+
+          <!-- MyGov -->
+          <div class="partner-item" title="MyGov">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>MyGov</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section section-white">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Choose SAMBANDH.AI?</h2>
+          <p class="section-text">
+            Leveraging artificial intelligence to transform public service delivery and citizen engagement.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon" style="display:flex;align-items:center;justify-content:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="10" rx="2" />
+                <circle cx="12" cy="5" r="2" />
+                <path d="M12 7v4" />
+                <line x1="8" y1="16" x2="8" y2="16" />
+                <line x1="16" y1="16" x2="16" y2="16" />
+              </svg>
+            </div>
+            <h3 class="feature-title">AI Understanding</h3>
+            <p class="feature-text">
+              Advanced AI comprehends your complaint in multiple languages with 98% accuracy.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon" style="display:flex;align-items:center;justify-content:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+            </div>
+            <h3 class="feature-title">Smart Prioritization</h3>
+            <p class="feature-text">
+              Intelligent algorithms prioritize urgent cases for faster resolution.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon" style="display:flex;align-items:center;justify-content:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </div>
+            <h3 class="feature-title">Full Transparency</h3>
+            <p class="feature-text">
+              Track every step of your complaint with real-time updates and notifications.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="section section-muted">
+      <div class="container">
+        <div class="trust-grid">
+          <div>
+            <h2 class="trust-title">
+              Trusted by Millions of Citizens Across India
+            </h2>
+            <p class="trust-text">
+              SAMBANDH.AI is part of the Government of India's Digital India initiative,
+              designed to bring transparency and efficiency to public grievance resolution.
+            </p>
+            <div class="trust-list">
+              <div class="trust-item">
+                <div class="trust-item-icon"
+                  style="display:flex;align-items:center;justify-content:center;background:#dcfce7;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <span>Government-grade security &amp; encryption</span>
+              </div>
+              <div class="trust-item">
+                <div class="trust-item-icon"
+                  style="display:flex;align-items:center;justify-content:center;background:#dcfce7;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <span>Available in 12+ Indian languages</span>
+              </div>
+              <div class="trust-item">
+                <div class="trust-item-icon"
+                  style="display:flex;align-items:center;justify-content:center;background:#dcfce7;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <span>24/7 automated complaint processing</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trust-card">
+            <h3 class="trust-card-title">Platform Statistics</h3>
+
+            <div class="trust-stat-block">
+              <div class="trust-stat-header">
+                <span>Resolution Rate</span>
+                <span class="trust-stat-value" style="font-weight:700;">94%</span>
+              </div>
+              <div class="trust-bar-bg">
+                <div class="trust-bar-fill" style="width:94%;"></div>
+              </div>
+            </div>
+
+            <div class="trust-stat-block">
+              <div class="trust-stat-header">
+                <span>Citizen Satisfaction</span>
+                <span class="trust-stat-value" style="font-weight:700;">4.7/5.0</span>
+              </div>
+              <div class="trust-bar-bg">
+                <div class="trust-bar-fill" style="width:94%;"></div>
+              </div>
+            </div>
+
+            <div class="trust-stat-block">
+              <div class="trust-stat-header">
+                <span>AI Accuracy</span>
+                <span class="trust-stat-value" style="font-weight:700;">98%</span>
+              </div>
+              <div class="trust-bar-bg">
+                <div class="trust-bar-fill" style="width:98%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Badges -->
+    <section class="badges-section">
+      <div class="container">
+        <div class="badges-row">
+          <div class="badge-item">
+            <div class="badge-item-icon" style="display:flex;align-items:center;justify-content:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="#1F3A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L4 7l2 13h12l2-13-8-5z" />
+                <path d="M12 9v6" />
+                <path d="M9 15h6" />
+              </svg>
+            </div>
+            <span>Government of India</span>
+          </div>
+          <div class="badge-divider"></div>
+          <div class="badge-item">
+            <div class="badge-item-icon" style="display:flex;align-items:center;justify-content:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="#1F3A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="7" />
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+              </svg>
+            </div>
+            <span>ISO 27001 Certified</span>
+          </div>
+          <div class="badge-divider"></div>
+          <div class="badge-item">
+            <div class="badge-item-icon" style="display:flex;align-items:center;justify-content:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="#1F3A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </div>
+            <span>Digital India Initiative</span>
+          </div>
+          <div class="badge-divider"></div>
+          <div class="badge-item">
+            <div class="badge-item-icon" style="display:flex;align-items:center;justify-content:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="#1F3A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+            </div>
+            <span>MEITY Approved</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    function updateNavbar() {
+      const userEmail = localStorage.getItem('userEmail');
+      const userRole = localStorage.getItem('userRole');
+      const navButtons = document.getElementById('nav-buttons');
+
+      if (userEmail && userRole) {
+        // Logged in
+        let dashboardLink = 'complaintportal.html';
+        if (userRole === 'officer') dashboardLink = 'officer.html';
+        if (userRole === 'admin') dashboardLink = 'admin.html';
+
+        navButtons.innerHTML = `
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <a href="${dashboardLink}" class="btn-dashboard">
+              <span>👤</span>
+              <span>Dashboard</span>
+            </a>
+            <button onclick="handleLogout()" style="border:none;background:none;color:#ef4444;cursor:pointer;font-weight:600;">Logout</button>
+          </div>
+        `;
+      } else {
+        // Not logged in
+        navButtons.innerHTML = `<a href="login.html" class="btn-login">Login</a>`;
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userRole');
+      updateNavbar();
+      window.location.href = 'landingpage.html';
+    }
+
+    updateNavbar();
+  </script>
+</body>
+
+</html>

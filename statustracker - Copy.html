@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Track Complaint Status – SAMBANDH.AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      color: #0f172a;
+    }
+
+    /* Header Styles */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      text-decoration: none;
+    }
+
+    .navbar-logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, #1F3A8A, #0EA5A4);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .navbar-menu {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .navbar-item {
+      text-decoration: none;
+      color: #475569;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .navbar-item:hover {
+      color: #0EA5A4;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-user {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f1f5f9;
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
+      color: #1F3A8A;
+      font-weight: 500;
+    }
+
+    .navbar-logout {
+      background: none;
+      border: none;
+      color: #ef4444;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .navbar-logout:hover {
+      color: #dc2626;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-menu {
+        gap: 1rem;
+      }
+
+      .navbar-item {
+        font-size: 0.85rem;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 3rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      margin-bottom: 0.8rem;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #64748b;
+    }
+
+    .card {
+      margin-top: 2rem;
+      background: rgba(255,255,255,0.85);
+      border-radius: 1.7rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 20px 40px rgba(15,23,42,0.22);
+      padding: 2rem 2.25rem;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 1.7rem 1.4rem;
+      }
+    }
+
+    .search-form {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    @media (max-width: 640px) {
+      .search-form {
+        flex-direction: column;
+      }
+    }
+
+    .search-input {
+      flex: 1;
+      border-radius: 1rem;
+      border: 2px solid #e2e8f0;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: #0EA5A4;
+      box-shadow: 0 0 0 2px rgba(14,165,164,0.2);
+    }
+
+    .btn-primary {
+      border-radius: 1rem;
+      border: none;
+      cursor: pointer;
+      padding: 0.9rem 1.9rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: linear-gradient(to right, #1F3A8A, #0EA5A4);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 16px 36px rgba(15,23,42,0.30);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+      box-shadow: 0 8px 22px rgba(15,23,42,0.25);
+    }
+
+    .btn-outline {
+      border-radius: 0.9rem;
+      border: 2px solid #0EA5A4;
+      background: #ffffff;
+      color: #0EA5A4;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 0.8rem;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-outline:hover {
+      background: #0EA5A4;
+      color: #ffffff;
+    }
+
+    .btn-outline-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .btn-outline-row {
+        flex-direction: row;
+      }
+    }
+
+    .overview-card {
+      margin-top: 1.5rem;
+      background: rgba(255,255,255,0.9);
+      border-radius: 1.7rem;
+      border: 1px solid #e2e8f0;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 18px 36px rgba(15,23,42,0.22);
+    }
+
+    .overview-top {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .overview-top {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .overview-id {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .chip {
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .chip-blue {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .chip-yellow {
+      background: #fef3c7;
+      color: #a16207;
+    }
+
+    .overview-right {
+      text-align: left;
+    }
+
+    @media (min-width: 768px) {
+      .overview-right {
+        text-align: right;
+      }
+    }
+
+    .expected-label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: #64748b;
+      margin-bottom: 0.2rem;
+    }
+
+    @media (min-width: 768px) {
+      .expected-label {
+        justify-content: flex-end;
+      }
+    }
+
+    .expected-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0EA5A4;
+    }
+
+    .officer-card {
+      margin-top: 1.2rem;
+      border-radius: 1rem;
+      padding: 1.3rem 1.4rem;
+      background: linear-gradient(to right, #eff6ff, #ecfeff);
+      border: 1px solid #bfdbfe;
+    }
+
+    .officer-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .officer-avatar {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1F3A8A, #0EA5A4);
+    }
+
+    .officer-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1F3A8A;
+    }
+
+    .officer-name {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .officer-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .officer-actions {
+        flex-direction: row;
+      }
+    }
+
+    .timeline-card {
+      margin-top: 1.5rem;
+      background: rgba(255,255,255,0.9);
+      border-radius: 1.7rem;
+      border: 1px solid #e2e8f0;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 18px 36px rgba(15,23,42,0.22);
+    }
+
+    .timeline-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 0.9rem;
+    }
+
+    .timeline-icon-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timeline-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #ffffff;
+    }
+
+    .timeline-icon.completed {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .timeline-icon.active {
+      background: linear-gradient(135deg, #f97316, #eab308);
+      animation: pulse 1.2s infinite;
+    }
+
+    .timeline-icon.pending {
+      background: #e5e7eb;
+      color: #9ca3af;
+    }
+
+    .timeline-connector {
+      width: 2px;
+      height: 4rem;
+      margin-top: 0.5rem;
+      background: #e5e7eb;
+    }
+
+    .timeline-connector.completed {
+      background: linear-gradient(to bottom, #22c55e, #16a34a);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    .timeline-content {
+      flex: 1;
+      padding-bottom: 1rem;
+    }
+
+    .timeline-box {
+      border-radius: 1rem;
+      border: 2px solid;
+      padding: 1rem 1.1rem;
+      font-size: 0.9rem;
+    }
+
+    .timeline-box.completed {
+      border-color: #bbf7d0;
+      background: #ecfdf5;
+    }
+
+    .timeline-box.active {
+      border-color: #fed7aa;
+      background: #fff7ed;
+    }
+
+    .timeline-box.pending {
+      border-color: #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .timeline-step {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-step.completed {
+      color: #166534;
+    }
+
+    .timeline-step.active {
+      color: #9a3412;
+    }
+
+    .timeline-step.pending {
+      color: #6b7280;
+    }
+
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 0.2rem;
+    }
+
+    .timeline-date {
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .timeline-date.completed {
+      color: #15803d;
+    }
+
+    .timeline-date.active {
+      color: #c2410c;
+    }
+
+    .timeline-date.pending {
+      color: #6b7280;
+    }
+
+    .help-text {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #64748b;
+      text-align: center;
+    }
+
+    .help-text a {
+      color: #0EA5A4;
+      font-weight: 600;
+    }
+
+    .help-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Header -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-left">
+        <a href="landingpage.html" class="navbar-logo">
+          <div class="navbar-logo-icon">S</div>
+          <span>SAMBANDH.AI</span>
+        </a>
+        <ul class="navbar-menu">
+          <li><a href="landingpage.html" class="navbar-item">🏠 Home</a></li>
+          <li><a href="complaintportal.html" class="navbar-item">📝 Register</a></li>
+          <li><a href="statustracker.html" class="navbar-item">🔍 Track</a></li>
+        </ul>
+      </div>
+      <div class="navbar-right">
+        <div class="navbar-user">
+          <span id="username-display">User</span>
+        </div>
+        <button class="navbar-logout" onclick="handleLogout()">↩️ Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    // Initialize user from session/localStorage
+    function initializeUserDisplay() {
+      const userEmail = localStorage.getItem('userEmail');
+      if (userEmail) {
+        const username = userEmail.split('@')[0];
+        document.getElementById('username-display').textContent = username.charAt(0).toUpperCase() + username.slice(1);
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+
+    // Handle logout
+    function handleLogout() {
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userRole');
+      window.location.href = 'landingpage.html';
+    }
+
+    // Initialize on page load
+    initializeUserDisplay();
+  </script>
+
+  <div class="page">
+    <div class="container">
+      <div class="text-center">
+        <h1 class="title">Track Complaint Status</h1>
+        <p class="subtitle">
+          Enter your complaint ID to view real-time progress
+        </p>
+      </div>
+
+      <!-- Search form -->
+      <div class="card">
+        <form id="track-form" class="search-form" novalidate>
+          <input
+            id="complaint-input"
+            type="text"
+            placeholder="Enter Complaint ID (e.g., CMPL-2026-00123)"
+            class="search-input"
+            required
+          />
+          <button type="submit" class="btn-primary">
+            <span>🔍</span>
+            <span>Track</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Results container -->
+      <div id="results-container" style="margin-top:1.5rem; display:none;">
+        <!-- Status overview -->
+        <div class="overview-card">
+          <div class="overview-top">
+            <div>
+              <div id="complaint-id" class="overview-id"></div>
+              <div class="chip-row">
+                <span id="complaint-category" class="chip chip-blue"></span>
+                <span id="complaint-status" class="chip chip-yellow"></span>
+              </div>
+            </div>
+            <div class="overview-right">
+              <div class="expected-label">
+                <span>📅</span>
+                <span>Expected Resolution</span>
+              </div>
+              <div id="expected-date" class="expected-value"></div>
+            </div>
+          </div>
+
+          <div class="officer-card">
+            <div class="officer-header">
+              <div class="officer-avatar"></div>
+              <div>
+                <div class="officer-title">Assigned Officer</div>
+                <div id="officer-name" class="officer-name"></div>
+              </div>
+            </div>
+            <div class="officer-actions btn-outline-row">
+              <button id="btn-call" class="btn-outline"></button>
+              <button id="btn-message" class="btn-outline">
+                💬 Message
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-card">
+          <div class="timeline-title">Progress Timeline</div>
+          <div id="timeline-list" class="timeline-list"></div>
+        </div>
+      </div>
+
+      <!-- Help text when no data -->
+      <div id="help-text" class="help-text">
+        <p>
+          Don't have a complaint ID?
+          <a href="/complaint">Register a complaint</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const trackForm = document.getElementById('track-form');
+    const complaintInput = document.getElementById('complaint-input');
+    const resultsContainer = document.getElementById('results-container');
+    const helpText = document.getElementById('help-text');
+
+    const complaintIdEl = document.getElementById('complaint-id');
+    const complaintCategoryEl = document.getElementById('complaint-category');
+    const complaintStatusEl = document.getElementById('complaint-status');
+    const expectedDateEl = document.getElementById('expected-date');
+    const officerNameEl = document.getElementById('officer-name');
+    const btnCall = document.getElementById('btn-call');
+    const btnMessage = document.getElementById('btn-message');
+    const timelineList = document.getElementById('timeline-list');
+
+    function getMockData() {
+      const randomId = 'CMPL-2026-00' + (Math.floor(Math.random() * 9000) + 1000);
+      return {
+        id: randomId,
+        category: 'Infrastructure',
+        status: 'In Progress',
+        currentStep: 3,
+        officer: 'Rajesh Kumar',
+        officerContact: '+91 98765 43210',
+        expectedDate: '15 Jan 2026',
+        timeline: [
+          {
+            step: 'Submitted',
+            status: 'completed',
+            date: '03 Jan 2026, 10:30 AM',
+            description: 'Complaint submitted and registered successfully'
+          },
+          {
+            step: 'Analyzed',
+            status: 'completed',
+            date: '03 Jan 2026, 10:35 AM',
+            description: 'AI analyzed and categorized as Infrastructure - Priority: High'
+          },
+          {
+            step: 'Assigned',
+            status: 'completed',
+            date: '03 Jan 2026, 11:00 AM',
+            description: 'Assigned to Municipal Engineer - Rajesh Kumar'
+          },
+          {
+            step: 'In Progress',
+            status: 'active',
+            date: '04 Jan 2026, 09:00 AM',
+            description: 'Field inspection scheduled and team dispatched'
+          },
+          {
+            step: 'Resolved',
+            status: 'pending',
+            date: 'Expected: 15 Jan 2026',
+            description: 'Awaiting resolution and closure'
+          }
+        ]
+      };
+    }
+
+    function renderTimeline(timeline) {
+      timelineList.innerHTML = '';
+      timeline.forEach((item, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'timeline-item';
+
+        const iconCol = document.createElement('div');
+        iconCol.className = 'timeline-icon-col';
+
+        const icon = document.createElement('div');
+        icon.className = 'timeline-icon ' + item.status;
+        icon.textContent = item.status === 'completed' ? '✔' : '⏰';
+        iconCol.appendChild(icon);
+
+        if (index < timeline.length - 1) {
+          const connector = document.createElement('div');
+          connector.className = 'timeline-connector' + (item.status === 'completed' ? ' completed' : '');
+          iconCol.appendChild(connector);
+        }
+
+        const contentCol = document.createElement('div');
+        contentCol.className = 'timeline-content';
+
+        const box = document.createElement('div');
+        box.className = 'timeline-box ' + item.status;
+
+        const step = document.createElement('div');
+        step.className = 'timeline-step ' + item.status;
+        step.textContent = item.step;
+
+        const desc = document.createElement('div');
+        desc.className = 'timeline-desc';
+        desc.textContent = item.description;
+
+        const date = document.createElement('div');
+        date.className = 'timeline-date ' + item.status;
+        date.textContent = item.date;
+
+        box.appendChild(step);
+        box.appendChild(desc);
+        box.appendChild(date);
+        contentCol.appendChild(box);
+
+        wrapper.appendChild(iconCol);
+        wrapper.appendChild(contentCol);
+
+        timelineList.appendChild(wrapper);
+      });
+    }
+
+    trackForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const enteredId = complaintInput.value.trim();
+      if (enteredId.length <= 5) {
+        alert('Please enter a valid Complaint ID (at least 6 characters).');
+        return;
+      }
+
+      const data = getMockData();
+
+      complaintIdEl.textContent = 'Complaint ID: ' + data.id;
+      complaintCategoryEl.textContent = data.category;
+      complaintStatusEl.textContent = data.status;
+      expectedDateEl.textContent = data.expectedDate;
+      officerNameEl.textContent = data.officer;
+      btnCall.textContent = 'Call: ' + data.officerContact;
+
+      renderTimeline(data.timeline);
+
+      resultsContainer.style.display = 'block';
+      helpText.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
+
