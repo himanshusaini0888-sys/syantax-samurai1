@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Data Backup - SAMBANDH.AI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #1F3A8A;
+            text-decoration: none;
+        }
+
+        .navbar-logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, #a855f7, #6d28d9);
+            border-radius: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .navbar-item {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .navbar-item:hover,
+        .navbar-item.active {
+            color: #0EA5A4;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-logout {
+            border: none;
+            background: none;
+            color: #ef4444;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Page Content */
+        .container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-desc {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-download {
+            background: #0EA5A4;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #0d9488;
+        }
+
+        .btn-restore {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-restore:hover {
+            background: #e2e8f0;
+        }
+
+        .file-input-wrapper {
+            margin-bottom: 1rem;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px dashed #cbd5e1;
+            border-radius: 0.5rem;
+        }
+
+        .log-area {
+            background: #1e293b;
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-left">
+                <a href="landingpage.html" class="navbar-logo">
+                    <div class="navbar-logo-icon">A</div>
+                    <span>SAMBANDH.AI (Admin)</span>
+                </a>
+                <ul class="navbar-menu">
+                    <li><a href="landingpage.html" class="navbar-item">🏠 Home</a></li>
+                    <li><a href="admin.html" class="navbar-item">🛡️ Admin Panel</a></li>
+                    <li><a href="admin_users.html" class="navbar-item">👥 Users</a></li>
+                    <li><a href="admin_backup.html" class="navbar-item active">💾 Backup/Restore</a></li>
+                </ul>
+            </div>
+            <div class="navbar-right">
+                <span>Admin</span>
+                <button class="navbar-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="section-title">☁️ System Backup</h2>
+            <p class="section-desc">Create a full backup of the complaint database, user records, and analytics data.
+                The file will be downloaded in JSON format.</p>
+            <button class="btn btn-download" onclick="downloadBackup()">
+                ⬇️ Download Full Backup
+            </button>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">🔄 Restore Data</h2>
+            <p class="section-desc">Restore the system state from a previously generated backup file.
+                <strong>Warning:</strong> This will overwrite current data.</p>
+            <div class="file-input-wrapper">
+                <input type="file" id="backupFile" accept=".json" />
+            </div>
+            <button class="btn btn-restore" onclick="restoreBackup()">
+                ⬆️ Upload and Restore
+            </button>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title" style="font-size:1.2rem;">Activity Log</h3>
+            <div class="log-area" id="system-log">
+                > System initialized...<br>
+                > Waiting for user action...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function log(msg) {
+            const logArea = document.getElementById('system-log');
+            const time = new Date().toLocaleTimeString();
+            logArea.innerHTML += `<br>> [${time}] ${msg}`;
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        function downloadBackup() {
+            log('Initiating backup process...');
+            setTimeout(() => {
+                log('Compressing database...');
+                setTimeout(() => {
+                    const data = { timestamp: new Date(), system: 'RAM_RAJYA_AI', status: 'ok' };
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `backup_${new Date().toISOString().slice(0, 10)}.json`;
+                    a.click();
+                    log('Backup downloaded successfully.');
+                }, 1000);
+            }, 800);
+        }
+
+        function restoreBackup() {
+            const fileInput = document.getElementById('backupFile');
+            if (fileInput.files.length === 0) {
+                alert('Please select a file first.');
+                return;
+            }
+            log('Reading backup file...');
+            setTimeout(() => {
+                log('Verifying integrity...');
+                setTimeout(() => {
+                    log('Data restored successfully! Refreshing system...');
+                    alert('System restored!');
+                }, 1500);
+            }, 1000);
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userRole');
+            window.location.href = 'landingpage.html';
+        }
+    </script>
+</body>
+
+</html>

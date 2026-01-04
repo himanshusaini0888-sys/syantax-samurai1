@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Analytics Dashboard</title>
+
+  <!-- CSS -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      color: #0f172a;
+    }
+
+    /* Header Styles */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1F3A8A;
+      text-decoration: none;
+    }
+
+    .navbar-logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, #1F3A8A, #0EA5A4);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .navbar-menu {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .navbar-item {
+      text-decoration: none;
+      color: #475569;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .navbar-item:hover {
+      color: #0EA5A4;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .navbar-user {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f1f5f9;
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
+      color: #1F3A8A;
+      font-weight: 500;
+    }
+
+    .navbar-logout {
+      background: none;
+      border: none;
+      color: #ef4444;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .navbar-logout:hover {
+      color: #dc2626;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-menu {
+        gap: 1rem;
+      }
+
+      .navbar-item {
+        font-size: 0.85rem;
+      }
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1f3a8a;
+    }
+
+    .subtitle {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .updated-card {
+      padding: 0.5rem 1rem;
+      background: #ffffff;
+      border-radius: 0.75rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+    }
+
+    .updated-label {
+      font-size: 0.7rem;
+      color: #64748b;
+    }
+
+    .updated-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1f3a8a;
+    }
+
+    .live-button {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      border: none;
+      cursor: pointer;
+      color: #ffffff;
+      background: linear-gradient(to right, #1f3a8a, #0ea5a4);
+      box-shadow: 0 4px 10px rgba(14, 148, 136, 0.4);
+      font-size: 0.85rem;
+    }
+
+    .live-icon {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #f97316;
+    }
+
+    /* Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: #ffffff;
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .metric-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .metric-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.9rem;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.3);
+    }
+
+    .metric-blue {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    .metric-green {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+    }
+
+    .metric-orange {
+      background: linear-gradient(135deg, #f97316, #c2410c);
+    }
+
+    .metric-purple {
+      background: linear-gradient(135deg, #a855f7, #6d28d9);
+    }
+
+    .metric-change {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .metric-change.positive {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .metric-change.negative {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1f3a8a;
+      margin-bottom: 0.2rem;
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 0.2rem;
+    }
+
+    .metric-subtext {
+      font-size: 0.75rem;
+      color: #0ea5a4;
+      font-weight: 500;
+    }
+
+    /* Cards and grids */
+    .card {
+      background: #ffffff;
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .card-large {
+      grid-column: span 2;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .two-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .card-header-inline {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1f3a8a;
+    }
+
+    .toggle-group {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .toggle-button {
+      font-size: 0.7rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      background: #e5e7eb;
+      color: #4b5563;
+    }
+
+    .toggle-button.active {
+      background: #1f3a8a;
+      color: #ffffff;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .legend-color {
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 0.2rem;
+    }
+
+    .legend-color.resolved {
+      background: #0ea5a4;
+    }
+
+    .legend-color.pending {
+      background: #f97316;
+    }
+
+    .legend-label {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* Priority list */
+    .priority-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+      font-size: 0.75rem;
+      color: #475569;
+    }
+
+    /* Note */
+    .note-center {
+      text-align: center;
+      margin-top: 0.7rem;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .highlight {
+      color: #f97316;
+      font-weight: 600;
+    }
+
+    /* Locations */
+    .icon-pin {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 999px;
+      background: #1f3a8a;
+    }
+
+    .location-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .location-item {
+      width: 100%;
+    }
+
+    .location-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.25rem;
+    }
+
+    .location-name {
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .location-stats {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .location-complaints {
+      font-weight: 700;
+      color: #1f3a8a;
+    }
+
+    .location-trend-positive {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #b91c1c;
+    }
+
+    .location-trend-negative {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #15803d;
+    }
+
+    .location-bar {
+      position: relative;
+      width: 100%;
+      height: 0.4rem;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .location-bar-fill {
+      position: absolute;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(to right, #1f3a8a, #0ea5a4);
+    }
+
+    .location-caption {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-top: 0.2rem;
+    }
+
+    /* Performance summary */
+    .performance-summary {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .performance-score {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1f3a8a;
+    }
+
+    .performance-label {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    /* AI card */
+    .ai-card {
+      background: linear-gradient(135deg, #a855f7, #ec4899, #f97373);
+      color: #ffffff;
+      border: none;
+    }
+
+    .ai-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .ai-icon {
+      width: 2.7rem;
+      height: 2.7rem;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .ai-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .ai-subtitle {
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+
+    .ai-box {
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 0.9rem;
+      padding: 0.7rem 0.9rem;
+      margin-bottom: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .ai-box-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .ai-box-text {
+      font-size: 0.75rem;
+      opacity: 0.95;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-large {
+        grid-column: span 1;
+      }
+
+      .two-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <!-- Navigation Header -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-left">
+        <a href="landingpage.html" class="navbar-logo">
+          <div class="navbar-logo-icon" style="background: linear-gradient(135deg, #a855f7, #6d28d9);">A</div>
+          <span>SAMBANDH.AI (Admin)</span>
+        </a>
+        <ul class="navbar-menu">
+          <li><a href="landingpage.html" class="navbar-item">🏠 Home</a></li>
+          <li><a href="admin.html" class="navbar-item" style="color:#0EA5A4;">🛡️ Admin Panel</a></li>
+          <li><a href="admin_users.html" class="navbar-item">👥 Users</a></li>
+          <li><a href="admin_backup.html" class="navbar-item">💾 Backup/Restore</a></li>
+        </ul>
+      </div>
+      <div class="navbar-right">
+        <div class="navbar-user">
+          <span id="username-display">Admin</span>
+        </div>
+        <button class="navbar-logout" onclick="handleLogout()">↩️ Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    // Initialize user from session/localStorage
+    function initializeUserDisplay() {
+      const userEmail = localStorage.getItem('userEmail');
+      if (userEmail) {
+        const username = userEmail.split('@')[0];
+        document.getElementById('username-display').textContent = username.charAt(0).toUpperCase() + username.slice(1);
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+
+    // Handle logout
+    function handleLogout() {
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userRole');
+      window.location.href = 'landingpage.html';
+    }
+
+    // Initialize on page load
+    initializeUserDisplay();
+  </script>
+
+  <div class="page">
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div>
+          <h1 class="title">Admin Analytics Dashboard</h1>
+          <p class="subtitle">Real-time insights and AI-powered analytics</p>
+        </div>
+        <div class="header-right">
+          <div class="updated-card">
+            <div class="updated-label">Last Updated</div>
+            <div class="updated-value">Just now</div>
+          </div>
+          <button class="live-button">
+            <span class="live-icon"></span>
+            Live
+          </button>
+        </div>
+      </header>
+
+      <!-- Key Metrics -->
+      <section class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon metric-blue"></div>
+            <div class="metric-change positive">+12.5%</div>
+          </div>
+          <div class="metric-value">2,547</div>
+          <div class="metric-label">Total Complaints</div>
+          <div class="metric-subtext">vs last month</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon metric-green"></div>
+            <div class="metric-change positive">+3.2%</div>
+          </div>
+          <div class="metric-value">94.2%</div>
+          <div class="metric-label">Resolution Rate</div>
+          <div class="metric-subtext">Above target</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon metric-orange"></div>
+            <div class="metric-change positive">-0.6 days</div>
+          </div>
+          <div class="metric-value">2.6 days</div>
+          <div class="metric-label">Avg Resolution Time</div>
+          <div class="metric-subtext">Improved</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <div class="metric-icon metric-purple"></div>
+            <div class="metric-change positive">+0.3</div>
+          </div>
+          <div class="metric-value">4.7/5</div>
+          <div class="metric-label">Citizen Satisfaction</div>
+          <div class="metric-subtext">Excellent</div>
+        </div>
+      </section>
+
+      <!-- Main Charts Grid -->
+      <section class="main-grid">
+        <!-- Department Performance -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Department Performance Overview</h3>
+            <div class="toggle-group">
+              <button class="toggle-button active">Month</button>
+              <button class="toggle-button">Year</button>
+            </div>
+          </div>
+          <canvas id="departmentChart" height="180"></canvas>
+          <div class="legend">
+            <div class="legend-item">
+              <span class="legend-color resolved"></span>
+              <span class="legend-label">Resolved</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color pending"></span>
+              <span class="legend-label">Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Priority Distribution -->
+        <div class="card">
+          <h3 class="card-title">Priority Distribution</h3>
+          <canvas id="priorityChart" height="150"></canvas>
+          <div class="priority-list" id="priorityList"></div>
+        </div>
+      </section>
+
+      <!-- Resolution Trend & Hourly Pattern -->
+      <section class="two-grid">
+        <div class="card">
+          <h3 class="card-title">Resolution Time Trend</h3>
+          <canvas id="resolutionChart" height="280"></canvas>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Complaint Pattern (24h)</h3>
+          <canvas id="hourlyChart" height="280"></canvas>
+          <p class="note-center">
+            Peak hours: <span class="highlight">6 PM - 9 PM</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Bottom Row -->
+      <section class="bottom-grid">
+        <!-- Location Hotspots -->
+        <div class="card">
+          <div class="card-header-inline">
+            <div class="icon-pin"></div>
+            <h3 class="card-title">Location Hotspots</h3>
+          </div>
+          <div id="locationList" class="location-list"></div>
+        </div>
+
+        <!-- System Performance -->
+        <div class="card">
+          <h3 class="card-title">System Performance</h3>
+          <canvas id="performanceChart" height="250"></canvas>
+          <div class="performance-summary">
+            <div class="performance-score">93.4%</div>
+            <div class="performance-label">Overall Performance Score</div>
+          </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="card ai-card">
+          <div class="ai-header">
+            <div class="ai-icon"></div>
+            <div>
+              <h3 class="ai-title">AI Insights</h3>
+              <p class="ai-subtitle">Predictive Analytics</p>
+            </div>
+          </div>
+
+          <div class="ai-box">
+            <p class="ai-box-title">Trend Forecast</p>
+            <p class="ai-box-text">
+              Expect <strong>15% increase</strong> in infrastructure complaints due to monsoon season.
+            </p>
+          </div>
+
+          <div class="ai-box">
+            <p class="ai-box-title">Resource Alert</p>
+            <p class="ai-box-text">
+              Andheri region needs <strong>2 additional teams</strong> for optimal coverage.
+            </p>
+          </div>
+
+          <div class="ai-box">
+            <p class="ai-box-title">Quick Win</p>
+            <p class="ai-box-text">
+              <strong>23 street light</strong> complaints can be resolved with single maintenance drive.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    const departmentData = [
+      { name: 'Infrastructure', complaints: 245, resolved: 198, pending: 47, satisfaction: 4.5 },
+      { name: 'Water Supply', complaints: 189, resolved: 156, pending: 33, satisfaction: 4.3 },
+      { name: 'Sanitation', complaints: 167, resolved: 142, pending: 25, satisfaction: 4.6 },
+      { name: 'Street Lights', complaints: 134, resolved: 121, pending: 13, satisfaction: 4.7 },
+      { name: 'Traffic', complaints: 98, resolved: 76, pending: 22, satisfaction: 4.2 }
+    ];
+
+    const resolutionTrend = [
+      { month: 'Aug', resolved: 420, avg_time: 4.2, satisfaction: 4.3 },
+      { month: 'Sep', resolved: 485, avg_time: 3.8, satisfaction: 4.4 },
+      { month: 'Oct', resolved: 512, avg_time: 3.5, satisfaction: 4.5 },
+      { month: 'Nov', resolved: 548, avg_time: 3.2, satisfaction: 4.6 },
+      { month: 'Dec', resolved: 612, avg_time: 2.9, satisfaction: 4.6 },
+      { month: 'Jan', resolved: 638, avg_time: 2.6, satisfaction: 4.7 }
+    ];
+
+    const priorityDistribution = [
+      { name: 'Critical', value: 45, color: '#DC2626' },
+      { name: 'High', value: 128, color: '#F97316' },
+      { name: 'Medium', value: 234, color: '#EAB308' },
+      { name: 'Low', value: 156, color: '#3B82F6' }
+    ];
+
+    const performanceRadar = [
+      { subject: 'Response Time', A: 95, fullMark: 100 },
+      { subject: 'Resolution Rate', A: 94, fullMark: 100 },
+      { subject: 'Satisfaction', A: 88, fullMark: 100 },
+      { subject: 'AI Accuracy', A: 98, fullMark: 100 },
+      { subject: 'Efficiency', A: 92, fullMark: 100 }
+    ];
+
+    const locationHeatmap = [
+      { location: 'Andheri', complaints: 89, resolved: 76, trend: '+5%' },
+      { location: 'Bandra', complaints: 76, resolved: 68, trend: '+2%' },
+      { location: 'Worli', complaints: 64, resolved: 58, trend: '-3%' },
+      { location: 'Powai', complaints: 58, resolved: 52, trend: '+8%' },
+      { location: 'Juhu', complaints: 52, resolved: 47, trend: '+4%' }
+    ];
+
+    const hourlyData = [
+      { hour: '00', count: 12 }, { hour: '03', count: 8 }, { hour: '06', count: 15 },
+      { hour: '09', count: 45 }, { hour: '12', count: 78 }, { hour: '15', count: 65 },
+      { hour: '18', count: 92 }, { hour: '21', count: 54 }
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const deptCtx = document.getElementById('departmentChart').getContext('2d');
+      new Chart(deptCtx, {
+        type: 'bar',
+        data: {
+          labels: departmentData.map(d => d.name),
+          datasets: [
+            {
+              label: 'Resolved',
+              data: departmentData.map(d => d.resolved),
+              backgroundColor: '#0EA5A4',
+              borderRadius: 6
+            },
+            {
+              label: 'Pending',
+              data: departmentData.map(d => d.pending),
+              backgroundColor: '#F97316',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(255,255,255,0.98)',
+              titleColor: '#0f172a',
+              bodyColor: '#0f172a',
+              borderColor: 'rgba(148,163,184,0.5)',
+              borderWidth: 1
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { display: false }
+            },
+            y: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0' }
+            }
+          }
+        }
+      });
+
+      const priorityCtx = document.getElementById('priorityChart').getContext('2d');
+      new Chart(priorityCtx, {
+        type: 'pie',
+        data: {
+          labels: priorityDistribution.map(d => d.name),
+          datasets: [
+            {
+              data: priorityDistribution.map(d => d.value),
+              backgroundColor: priorityDistribution.map(d => d.color)
+            }
+          ]
+        },
+        options: {
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+
+      const priorityList = document.getElementById('priorityList');
+      priorityDistribution.forEach(item => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${item.color};margin-right:6px;"></span>
+          ${item.name}: ${item.value}
+        `;
+        priorityList.appendChild(div);
+      });
+
+      const resCtx = document.getElementById('resolutionChart').getContext('2d');
+      new Chart(resCtx, {
+        type: 'line',
+        data: {
+          labels: resolutionTrend.map(d => d.month),
+          datasets: [
+            {
+              label: 'Resolved',
+              data: resolutionTrend.map(d => d.resolved),
+              borderColor: '#0EA5A4',
+              backgroundColor: 'rgba(14,165,164,0.25)',
+              tension: 0.4,
+              yAxisID: 'y1',
+              fill: true
+            },
+            {
+              label: 'Avg Time (days)',
+              data: resolutionTrend.map(d => d.avg_time),
+              borderColor: '#F97316',
+              backgroundColor: 'rgba(249,115,22,0.2)',
+              tension: 0.4,
+              yAxisID: 'y2',
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true },
+            tooltip: {
+              backgroundColor: 'rgba(255,255,255,0.98)',
+              titleColor: '#0f172a',
+              bodyColor: '#0f172a'
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0', borderDash: [3, 3] }
+            },
+            y1: {
+              position: 'left',
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0', borderDash: [3, 3] }
+            },
+            y2: {
+              position: 'right',
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { drawOnChartArea: false }
+            }
+          }
+        }
+      });
+
+      const hourlyCtx = document.getElementById('hourlyChart').getContext('2d');
+      new Chart(hourlyCtx, {
+        type: 'line',
+        data: {
+          labels: hourlyData.map(d => d.hour),
+          datasets: [
+            {
+              label: 'Complaints',
+              data: hourlyData.map(d => d.count),
+              borderColor: '#1F3A8A',
+              backgroundColor: 'rgba(31,58,138,0.15)',
+              tension: 0.4,
+              pointRadius: 4,
+              pointBackgroundColor: '#1F3A8A'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(255,255,255,0.98)',
+              titleColor: '#0f172a',
+              bodyColor: '#0f172a'
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0', borderDash: [3, 3] }
+            },
+            y: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0', borderDash: [3, 3] }
+            }
+          }
+        }
+      });
+
+      const perfCtx = document.getElementById('performanceChart').getContext('2d');
+      new Chart(perfCtx, {
+        type: 'radar',
+        data: {
+          labels: performanceRadar.map(d => d.subject),
+          datasets: [
+            {
+              label: 'Performance',
+              data: performanceRadar.map(d => d.A),
+              borderColor: '#0EA5A4',
+              backgroundColor: 'rgba(14,165,164,0.3)',
+              pointBackgroundColor: '#0EA5A4',
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { display: false },
+              grid: { color: '#e2e8f0' },
+              angleLines: { color: '#e2e8f0' },
+              pointLabels: { color: '#64748b', font: { size: 11 } }
+            }
+          }
+        }
+      });
+
+      const locationList = document.getElementById('locationList');
+      locationHeatmap.forEach(loc => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'location-item';
+        const ratio = (loc.resolved / loc.complaints) * 100;
+
+        const trendClass = loc.trend.startsWith('+')
+          ? 'location-trend-positive'
+          : 'location-trend-negative';
+
+        wrapper.innerHTML = `
+          <div class="location-top">
+            <span class="location-name">${loc.location}</span>
+            <div class="location-stats">
+              <span class="location-complaints">${loc.complaints}</span>
+              <span class="${trendClass}">${loc.trend}</span>
+            </div>
+          </div>
+          <div class="location-bar">
+            <div class="location-bar-fill" style="width:${ratio}%;"></div>
+          </div>
+          <div class="location-caption">${loc.resolved} resolved of ${loc.complaints}</div>
+        `;
+        locationList.appendChild(wrapper);
+      });
+    });
+  </script>
+</body>
+
+</html>
